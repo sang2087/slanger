@@ -20,10 +20,6 @@ module Slanger
       error(Signature::AuthenticationError) { |e| halt 401, "401 UNAUTHORIZED" }
       error(Slanger::Api::InvalidRequest)   { |c| halt 400, "400 Bad Request" }
 
-      before do
-        pass if %w[ping].include? request.path_info.split('/')[1]
-        valid_request 
-      end
 
       get '/ping' do
         status 200
@@ -31,6 +27,8 @@ module Slanger
       end
 
       post '/apps/:app_id/events' do
+        valid_request 
+
         socket_id = valid_request.socket_id
         body = valid_request.body
 
@@ -42,6 +40,8 @@ module Slanger
       end
 
       post '/apps/:app_id/channels/:channel_id/events' do
+        valid_request 
+
         params = valid_request.params
 
         event = Event.new(params["name"], valid_request.body, valid_request.socket_id)
