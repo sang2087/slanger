@@ -21,7 +21,13 @@ module Slanger
       error(Slanger::Api::InvalidRequest)   { |c| halt 400, "400 Bad Request" }
 
       before do
-        valid_request
+        pass if %w[ping].include? request.path_info.split('/')[1]
+        valid_request 
+      end
+
+      post '/ping' do
+        status 200
+        return "pong"
       end
 
       post '/apps/:app_id/events' do
