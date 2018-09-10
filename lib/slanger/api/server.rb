@@ -25,7 +25,7 @@ module Slanger
         valid_request 
       end
 
-      post '/ping' do
+      get '/ping' do
         status 200
         return "pong"
       end
